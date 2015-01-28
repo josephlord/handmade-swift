@@ -34,7 +34,6 @@
 		6C17C9C41A79463500D54132 = {
 			isa = PBXGroup;
 			children = (
-				6C17C9ED1A79487100D54132 /* Platform */,
 				6C17C9D11A79481300D54132 /* Source */,
 				6C17C9D01A79481300D54132 /* Products */,
 			);
@@ -51,18 +50,10 @@
 		6C17C9D11A79481300D54132 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				6C17C9EE1A7948AC00D54132 /* macosx */,
 			);
 			name = Source;
 			path = src;
-			sourceTree = "<group>";
-		};
-		6C17C9ED1A79487100D54132 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-				6C17C9EE1A7948AC00D54132 /* macosx */,
-			);
-			name = Platform;
-			path = etc;
 			sourceTree = "<group>";
 		};
 		6C17C9EE1A7948AC00D54132 /* macosx */ = {
@@ -210,7 +201,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = etc/macosx/Info.plist;
+				INFOPLIST_FILE = src/macosx/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -252,7 +243,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = etc/macosx/Info.plist;
+				INFOPLIST_FILE = src/macosx/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>4783BB6A-5BAB-4F94-A1AB-B989B071E9B5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Handmade</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>691DFC3BD4CE9BD07BCC3A54374E5DFA1F42DCEF</key>
+		<string>https://github.com/owensd/handmade-swift.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Handmade.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>691DFC3BD4CE9BD07BCC3A54374E5DFA1F42DCEF</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/owensd/handmade-swift.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>691DFC3BD4CE9BD07BCC3A54374E5DFA1F42DCEF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>691DFC3BD4CE9BD07BCC3A54374E5DFA1F42DCEF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>swift</string>
+		</dict>
+	</array>
+</dict>
+</plist>
