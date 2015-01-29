@@ -19,19 +19,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-class GraphicsBufferView : NSView {
-    var buffer = UnsafeMutablePointer<UInt8>.null()
-    var bufferWidth: UInt = 200
-    var bufferHeight: UInt = 300
+struct OffscreenBuffer {
+    // Pixel data is packed: AABBGGRR
+    var pixels = UnsafeMutablePointer<UInt8>.null()
+    var sizeInBytes: Int { return Int(width * height * bytesPerPixel) }
+    
+    var width: UInt = 0
+    var height: UInt = 0
+    
+    init(pixels: UnsafeMutablePointer<UInt8>, width: UInt, height: UInt) {
+        self.pixels = pixels;
+        self.width = width
+        self.height = height
+    }
+    
     let bitsPerComponent: UInt = 8
     let bitsPerPixel: UInt = 32
     let bytesPerPixel: UInt = 4
     
-    var offsetX = 0
-    var offsetY = 0
-    
     let colorSpace = CGColorSpaceCreateDeviceRGB()
     let bitmapInfo = CGBitmapInfo.ByteOrderDefault
+}
+
+
+class GraphicsBufferView : NSView {
+    var buffer = OffscreenBuffer(pixels: UnsafeMutablePointer.null(), width: 0, height: 0)
+    
+    var offsetX = 0
+    var offsetY = 0
     
     func timerUpdate() {
         renderWeirdGradient(offsetX, offsetY)
@@ -60,25 +75,27 @@ class GraphicsBufferView : NSView {
         // TODO(owensd): This will crash if there is no context
         let context = NSGraphicsContext.currentContext()!.CGContext
         
-        let data = NSData(bytes: buffer, length: Int(bufferWidth * bufferHeight * bytesPerPixel))
+        let data = NSData(bytes: buffer.pixels, length: buffer.sizeInBytes)
         let provider = CGDataProviderCreateWithCFData(data)
         
         let image = CGImageCreate(
-            bufferWidth, bufferHeight, bitsPerComponent, bitsPerPixel, bytesPerPixel * bufferWidth,
-            colorSpace,
-            bitmapInfo,
+            buffer.width, buffer.height,
+            buffer.bitsPerComponent, buffer.bitsPerPixel,
+            buffer.bytesPerPixel * buffer.width,
+            buffer.colorSpace,
+            buffer.bitmapInfo,
             provider, nil, true, kCGRenderingIntentDefault)
 
-        let rect = CGRect(x: 0, y: 0, width: Int(bufferWidth), height: Int(bufferHeight))
+        let rect = CGRect(x: 0, y: 0, width: Int(buffer.width), height: Int(buffer.height))
         CGContextDrawImage(context, rect, image)
     }
 
     func renderWeirdGradient(blueOffset: Int, _ greenOffset: Int) {
-        let pixels = UnsafeMutablePointer<UInt32>(buffer)
+        let pixels = UnsafeMutablePointer<UInt32>(buffer.pixels)
         
-        for var y: UInt = 0; y < bufferHeight; y++ {
-            let row = y * bufferWidth
-            for var x: UInt = 0; x < bufferWidth; x++ {
+        for var y: UInt = 0; y < buffer.height; y++ {
+            let row = y * buffer.width
+            for var x: UInt = 0; x < buffer.width; x++ {
                 let red = UInt32(0)
                 let green = UInt32(y + greenOffset)
                 let blue = UInt32(x + blueOffset)
@@ -96,15 +113,15 @@ class GraphicsBufferView : NSView {
 extension GraphicsBufferView: NSWindowDelegate {
     
     func updateBuffer(newWidth: CGFloat, _ newHeight: CGFloat) {
-        if buffer != nil {
-            buffer.dealloc(Int(bufferWidth * bufferHeight * bytesPerPixel))
+        if buffer.pixels != nil {
+            buffer.pixels.dealloc(buffer.sizeInBytes)
         }
 
-        bufferWidth = UInt(self.bounds.width)
-        bufferHeight = UInt(self.bounds.height)
+        buffer.width = UInt(self.bounds.width)
+        buffer.height = UInt(self.bounds.height)
         
-        buffer = UnsafeMutablePointer<UInt8>.alloc(Int(bufferWidth * bufferHeight * bytesPerPixel))
-        memset(buffer, 255, bufferWidth * bufferHeight * bytesPerPixel)
+        buffer.pixels = UnsafeMutablePointer<UInt8>.alloc(buffer.sizeInBytes)
+        memset(buffer.pixels, 255, UInt(buffer.sizeInBytes))
         
         renderWeirdGradient(0, 0)
     }
