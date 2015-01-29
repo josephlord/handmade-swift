@@ -64,8 +64,6 @@ extension GraphicsBufferView: NSWindowDelegate {
         bufferHeight = UInt(self.bounds.height)
         
         buffer = UnsafeMutablePointer<UInt8>.alloc(Int(bufferWidth * bufferHeight * bytesPerPixel))
-        
-        // TODO(owensd): this is a really crappy way to initialize this memory
         memset(buffer, 255, bufferWidth * bufferHeight * bytesPerPixel)
     }
     
