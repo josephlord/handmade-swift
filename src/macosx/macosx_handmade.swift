@@ -42,7 +42,7 @@ struct OffscreenBuffer {
 
 
 class GraphicsBufferView : NSView {
-    var buffer = OffscreenBuffer()
+    final var buffer = OffscreenBuffer()
     
     var offsetX = 0
     var offsetY = 0
