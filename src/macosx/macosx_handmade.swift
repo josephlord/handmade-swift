@@ -105,13 +105,24 @@ class GraphicsBufferView : NSView {
         for var y = 0; y < buffer.height; y++ {
             let row = y * buffer.width
             for var x = 0; x < buffer.width; x++ {
-                let red: Byte   = 0
-                let green: Byte = Byte((y + greenOffset) & 0xFF)
-                let blue: Byte  = Byte((x + blueOffset) & 0xFF)
-                let alpha: Byte = 0
-
-                buffer.pixels[row + x].green = green;
-                buffer.pixels[row + x].blue = blue;
+                // Simply using the "FAST" code block changes the timing from 1.2s
+                // per call to 0.37s per call.
+                
+                // ---- SLOW CODE BLOCK
+                // buffer.pixels[row + x].green = Byte((y + greenOffset) & 0xFF)
+                // buffer.pixels[row + x].blue = Byte((y + blueOffset) & 0xFF)
+                // ---- END SLOW CODE BLOCK
+                
+                // ---- FASTER CODE BLOCK
+                let pixel = Pixel(
+                    red: 0,
+                    green: Byte((y + greenOffset) & 0xFF),
+                    blue: Byte((x + blueOffset) & 0xFF),
+                    alpha: 255)
+                
+                
+                buffer.pixels[row + x] = pixel
+                // ---- END FASTER CODE BLOCK
             }
         }
         
