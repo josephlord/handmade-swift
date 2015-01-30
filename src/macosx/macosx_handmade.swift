@@ -95,10 +95,13 @@ class GraphicsBufferView : NSView {
             provider, nil, true, kCGRenderingIntentDefault)
 
         let rect = CGRect(x: 0, y: 0, width: buffer.width, height: buffer.height)
-        CGContextDrawImage(context, rect, image)
         
         let elapsed = CACurrentMediaTime() - start
         println("elapsed: \(elapsed)")
+        
+        CGContextDrawImage(context, rect, image)
+        
+        
     }
 
     func renderWeirdGradient(blueOffset: Int, _ greenOffset: Int) {
