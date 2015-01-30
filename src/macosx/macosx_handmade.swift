@@ -48,10 +48,10 @@ class GraphicsBufferView : NSView {
     var offsetY = 0
     
     func timerUpdate() {
-        renderWeirdGradient(offsetX, offsetY)
-        
         offsetX = offsetX &+ 1
         offsetY = offsetY &+ 2
+        
+        self.needsDisplay = true
     }
     
     required init?(coder: NSCoder) {
@@ -71,6 +71,11 @@ class GraphicsBufferView : NSView {
     }
     
     override func drawRect(dirtyRect: NSRect) {
+        let start = CACurrentMediaTime()
+
+        
+        renderWeirdGradient(offsetX, offsetY)
+
         // TODO(owensd): This will crash if there is no context
         let context = NSGraphicsContext.currentContext()!.CGContext
         
@@ -91,6 +96,9 @@ class GraphicsBufferView : NSView {
 
         let rect = CGRect(x: 0, y: 0, width: buffer.width, height: buffer.height)
         CGContextDrawImage(context, rect, image)
+        
+        let elapsed = CACurrentMediaTime() - start
+        println("elapsed: \(elapsed)")
     }
 
     func renderWeirdGradient(blueOffset: Int, _ greenOffset: Int) {
