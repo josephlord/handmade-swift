@@ -42,7 +42,9 @@ struct OffscreenBuffer {
 
 
 class GraphicsBufferView : NSView {
-    final var buffer = OffscreenBuffer()
+    var buffer = OffscreenBuffer()
+    var nonFinalInt = 0
+    final var finalInt = 0
     
     var offsetX = 0
     var offsetY = 0
@@ -109,9 +111,10 @@ class GraphicsBufferView : NSView {
                 // per call to 0.37s per call.
                 
                 // ---- SLOW CODE BLOCK
-                // buffer.pixels[row + x].green = Byte((y + greenOffset) & 0xFF)
-                // buffer.pixels[row + x].blue = Byte((y + blueOffset) & 0xFF)
-                // ---- END SLOW CODE BLOCK
+/*
+                 buffer.pixels[row + x].green = Byte((y + greenOffset) & 0xFF)
+                 buffer.pixels[row + x].blue = Byte((x + blueOffset) & 0xFF)
+*/                // ---- END SLOW CODE BLOCK
                 
                 // ---- FASTER CODE BLOCK
                 let pixel = Pixel(
@@ -127,6 +130,14 @@ class GraphicsBufferView : NSView {
         }
         
         self.needsDisplay = true
+    }
+    
+    func testFinalAccess() {
+        finalInt = finalInt + 77
+    }
+    
+    func testNonFinalAccess() {
+        nonFinalInt = finalInt + 88
     }
 }
 
