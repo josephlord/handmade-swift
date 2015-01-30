@@ -42,7 +42,7 @@ struct OffscreenBuffer {
 
 
 class GraphicsBufferView : NSView {
-    var buffer = OffscreenBuffer()
+    final var buffer = OffscreenBuffer()
     
     var offsetX = 0
     var offsetY = 0
@@ -74,7 +74,8 @@ class GraphicsBufferView : NSView {
         let start = CACurrentMediaTime()
 
         
-        renderWeirdGradient(offsetX, offsetY)
+        buffer = GraphicsBufferView.renderWeirdGradient(buffer, offsetX, offsetY)
+        self.needsDisplay = true
 
         // TODO(owensd): This will crash if there is no context
         let context = NSGraphicsContext.currentContext()!.CGContext
@@ -101,7 +102,7 @@ class GraphicsBufferView : NSView {
         println("elapsed: \(elapsed)")
     }
 
-    func renderWeirdGradient(blueOffset: Int, _ greenOffset: Int) {
+    final class func renderWeirdGradient(var buffer: OffscreenBuffer, _ blueOffset: Int, _ greenOffset: Int)->OffscreenBuffer {
         for var y = 0; y < buffer.height; y++ {
             let row = y * buffer.width
             for var x = 0; x < buffer.width; x++ {
@@ -125,8 +126,8 @@ class GraphicsBufferView : NSView {
                 // ---- END FASTER CODE BLOCK
             }
         }
+        return buffer
         
-        self.needsDisplay = true
     }
 }
 
@@ -139,7 +140,7 @@ extension GraphicsBufferView: NSWindowDelegate {
         let black = Pixel(red: 0, green: 0, blue: 0, alpha: 255)
         buffer.pixels = [Pixel](count: buffer.width * buffer.height, repeatedValue: black)
         
-        renderWeirdGradient(0, 0)
+        buffer = GraphicsBufferView.renderWeirdGradient(buffer, 0, 0)
     }
     
     func windowDidResize(notification: NSNotification) {
