@@ -41,11 +41,11 @@ struct OffscreenBuffer {
 }
 
 
-class GraphicsBufferView : NSView {
-    var buffer = OffscreenBuffer()
+final class GraphicsBufferView : NSView {
+    final var buffer = OffscreenBuffer()
     
-    var offsetX = 0
-    var offsetY = 0
+    final var offsetX = 0
+    final var offsetY = 0
     
     func timerUpdate() {
         offsetX = offsetX &+ 1
