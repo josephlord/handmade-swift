@@ -76,6 +76,9 @@ final class GraphicsBufferView : NSView {
         
         renderWeirdGradient(offsetX, offsetY)
 
+        let elapsed = CACurrentMediaTime() - start
+        println(elapsed)
+        
         // TODO(owensd): This will crash if there is no context
         let context = NSGraphicsContext.currentContext()!.CGContext
         
@@ -96,8 +99,7 @@ final class GraphicsBufferView : NSView {
 
         let rect = CGRect(x: 0, y: 0, width: buffer.width, height: buffer.height)
         
-        let elapsed = CACurrentMediaTime() - start
-        println("elapsed: \(elapsed)")
+        
         
         CGContextDrawImage(context, rect, image)
         
