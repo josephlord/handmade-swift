@@ -107,30 +107,18 @@ final class GraphicsBufferView : NSView {
     }
 
     func renderWeirdGradient(blueOffset: Int, _ greenOffset: Int) {
-        for var y = 0; y < buffer.height; y++ {
-            let row = y * buffer.width
-            for var x = 0; x < buffer.width; x++ {
-                // Simply using the "FAST" code block changes the timing from 1.2s
-                // per call to 0.37s per call.
-                
-                // ---- SLOW CODE BLOCK
-                // buffer.pixels[row + x].green = Byte((y + greenOffset) & 0xFF)
-                // buffer.pixels[row + x].blue = Byte((y + blueOffset) & 0xFF)
-                // ---- END SLOW CODE BLOCK
-                
-                // ---- FASTER CODE BLOCK
-                let pixel = Pixel(
-                    red: 0,
-                    green: Byte((y + greenOffset) & 0xFF),
-                    blue: Byte((x + blueOffset) & 0xFF),
-                    alpha: 255)
-                
-                
-                buffer.pixels[row + x] = pixel
-                // ---- END FASTER CODE BLOCK
+        let height = buffer.height
+        let width = buffer.width
+        buffer.pixels.withUnsafeMutableBufferPointer { pixels->() in
+            for y in 0..<height {
+                let row = y * width
+                for x in 0..<width {
+                    let i = row + x
+                    pixels[i].green = Byte((y + greenOffset) & 0xFF)
+                    pixels[i].blue = Byte((x + blueOffset) & 0xFF)
+                }
             }
         }
-        
         self.needsDisplay = true
     }
 }
